@@ -66,4 +66,51 @@ public class MainActivityTest {
         // You can also use anything() in place of
         onData(is(instanceOf(String.class))).inAdapterView(withId(R.id.city_list)).atPosition(0).check(matches((withText("Edmonton"))));
     }
+
+    @Test
+    public void testActivitySwitch() {
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onData(is(instanceOf(String.class))).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+
+        // city_text_view and back_btn is unique to the CityActivity, so if it is displayed
+        // then the activities have switched
+        onView(withId(R.id.city_text_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.back_btn)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testConsistentCityName() {
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onData(is(instanceOf(String.class))).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+        
+        onView(withText("Edmonton")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testBackButton() {
+        onView(withId(R.id.button_add)).perform(click());
+        onView(withId(R.id.editText_name)).perform(ViewActions.typeText("Edmonton"));
+        onView(withId(R.id.button_confirm)).perform(click());
+
+        onData(is(instanceOf(String.class))).inAdapterView(withId(R.id.city_list)).atPosition(0).perform(click());
+
+        // city_text_view and back_btn is unique to CityActivity, so if it is displayed
+        // then the activities have switched
+        onView(withId(R.id.city_text_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.back_btn)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.back_btn)).perform(click());
+
+        // button_add, button_clear and city_list is unique to MainActivity, so if it is displayed
+        // then the activities have switched
+        onView(withId(R.id.button_add)).check(matches(isDisplayed()));
+        onView(withId(R.id.button_clear)).check(matches(isDisplayed()));
+        onView(withId(R.id.city_list)).check(matches(isDisplayed()));
+    }
 }
