@@ -2,6 +2,7 @@ package com.example.androiduitesting;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 cityAdapter.clear();
             }
+        });
+
+        cityList.setOnItemClickListener((adapterView, view, i, l) -> {
+            //Toast.makeText(MainActivity.this, "Selected: " + dataList.get(i), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, CityActivity.class);
+            intent.putExtra("city", dataList.get(i));
+            startActivity(intent);
         });
     }
 }
